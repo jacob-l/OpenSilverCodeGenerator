@@ -1,0 +1,17 @@
+﻿<UserControl
+    x:Class="OpenSilverCodeGenerator.LoaderComponent"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:OpenSilverCodeGenerator">
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <!-- Semi-transparent overlay that covers the entire view -->
+        <Rectangle Fill="#AA000000" />
+
+        <!-- Centered content with animation and message -->
+        <Grid Width="200" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image Width="50" Height="50" Source="https://i.stack.imgur.com/27Rnd.gif" />
+            <!-- Message below the animation -->
+            <TextBlock x:Name="Message" Text="" VerticalAlignment="Bottom" Foreground="White" HorizontalAlignment="Center" Margin="0,70,0,0"/>
+        </Grid>
+    </Grid>
+</UserControl>
