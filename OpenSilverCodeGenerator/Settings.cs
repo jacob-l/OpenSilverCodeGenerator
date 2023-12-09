@@ -14,7 +14,7 @@ namespace OpenSilverCodeGenerator
         public string Setup { get; set; } = @"
 You are the developer of an OpenSilver application.
 I need to create a simple user control inside the Grid according to the description.
-I will send you description. You return me only XAML code according to my description.
+I will send you a description. You return me only XAML code according to my description.
 Do not use any events in the xaml.
 Use different colors and gradients to make the component more attractive.";
 

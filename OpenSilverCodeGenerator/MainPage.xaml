@@ -52,34 +52,36 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Settings">
-                <StackPanel>
-                    <!-- API Key (using PasswordBox) -->
-                    <TextBlock Text="API Key" Margin="5"/>
-                    <PasswordBox x:Name="Password" Margin="5" />
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- API Key (using PasswordBox) -->
+                        <TextBlock Text="API Key" Margin="5"/>
+                        <PasswordBox x:Name="Password" Margin="5" />
 
-                    <!-- API Model-->
-                    <TextBlock Text="API Model" Margin="5"/>
-                    <TextBox x:Name="ApiModel" Margin="5" />
+                        <!-- API Model-->
+                        <TextBlock Text="API Model" Margin="5"/>
+                        <TextBox x:Name="ApiModel" Margin="5" />
 
-                    <!-- Max Tokens -->
-                    <TextBlock Text="Max Tokens" Margin="5"/>
-                    <TextBox x:Name="MaxTokens" Margin="5" />
+                        <!-- Max Tokens -->
+                        <TextBlock Text="Max Tokens" Margin="5"/>
+                        <TextBox x:Name="MaxTokens" Margin="5" />
 
-                    <!-- Max Attempts -->
-                    <TextBlock Text="Max Attempts" Margin="5"/>
-                    <TextBox x:Name="MaxAttempts" Margin="5" />
+                        <!-- Max Attempts -->
+                        <TextBlock Text="Max Attempts" Margin="5"/>
+                        <TextBox x:Name="MaxAttempts" Margin="5" />
 
-                    <!-- Setup (using TextBox) -->
-                    <TextBlock Text="Setup" Margin="5"/>
-                    <TextBox x:Name="Setup" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" Height="300"/>
+                        <!-- Setup (using TextBox) -->
+                        <TextBlock Text="Setup" Margin="5"/>
+                        <TextBox x:Name="Setup" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" Height="300"/>
 
-                    <!-- Examples (using TextBox) -->
-                    <TextBlock Text="Examples" Margin="5"/>
-                    <TextBox x:Name="Examples" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" Height="300"/>
+                        <!-- Examples (using TextBox) -->
+                        <TextBlock Text="Examples" Margin="5"/>
+                        <TextBox x:Name="Examples" Margin="5" TextWrapping="Wrap" AcceptsReturn="True" Height="300"/>
 
-                    <!-- Submit Button (optional) -->
-                    <Button Content="Save Settings" Margin="5" Click="SaveSettings"/>
-                </StackPanel>
+                        <!-- Submit Button (optional) -->
+                        <Button Content="Save Settings" Margin="5" Click="SaveSettings"/>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
     </Grid>

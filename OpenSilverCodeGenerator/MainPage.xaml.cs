@@ -12,6 +12,8 @@ namespace OpenSilverCodeGenerator
 {
     public partial class MainPage : Page
     {
+        private const string Delimiter = "-----";
+
         private Conversation _chat;
         private Settings _settings;
 
@@ -132,11 +134,13 @@ namespace OpenSilverCodeGenerator
 
             api.Chat.DefaultChatRequestArgs.MaxTokens = settings.MaxTokens;
             api.Chat.DefaultChatRequestArgs.Model = settings.ApiModel;
+            Console.WriteLine(api.Chat.DefaultChatRequestArgs.Temperature);
             var chat = api.Chat.CreateConversation();
             chat.AppendSystemMessage(settings.Setup);
 
-            // give a few examples as user and assistant
-            var examples = settings.Examples?.Split(new [] { "-----" }, StringSplitOptions.None);
+            // Additional model training
+            // Give a few examples as user and assistant
+            var examples = settings.Examples?.Split(new [] { Delimiter }, StringSplitOptions.None);
             if (examples != null)
             {
                 for (var i = 0; i + 1 < examples.Length; i+=2)
