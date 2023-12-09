@@ -70,7 +70,8 @@ namespace OpenSilverCodeGenerator
             }
 
             request = request.Substring(request.IndexOf("<Grid"));
-            request = request.Substring(0, request.LastIndexOf(">") + 1);
+            var closing = "Grid>";
+            request = request.Substring(0, request.LastIndexOf(closing) + closing.Length);
 
             return request;
         }
