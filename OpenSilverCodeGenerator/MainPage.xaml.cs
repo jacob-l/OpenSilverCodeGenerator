@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using OpenAI_API.Chat;
+using OpenSilverCodeGenerator.CodeGenerators;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,10 +12,11 @@ namespace OpenSilverCodeGenerator
 {
     public partial class MainPage : Page
     {
-        private const string Delimiter = "-----";
-
-        private Conversation _chat;
         private Settings _settings;
+
+        private readonly ChatGptCodeGenerator _chatGptCodeGenerator = new ChatGptCodeGenerator();
+
+        private readonly ICodeGenerator _currentCodeGenerator;
 
         public MainPage()
         {
@@ -24,7 +25,8 @@ namespace OpenSilverCodeGenerator
             OpenSilver.Interop.ExecuteJavaScriptVoid("console.clear()");
             // Enter construction logic here...
             _settings = RestoreSettings();
-            _chat = InitializeChat(_settings);
+            _chatGptCodeGenerator.Initialize(_settings);
+            _currentCodeGenerator = _chatGptCodeGenerator;
         }
 
 
@@ -41,7 +43,7 @@ namespace OpenSilverCodeGenerator
         {
             if (e.Key == Key.Enter)
             {
-                if (_chat == null || _settings == null)
+                if (!_currentCodeGenerator.IsReady || _settings == null)
                 {
                     return;
                 }
@@ -80,15 +82,14 @@ namespace OpenSilverCodeGenerator
 
         private async Task GenerateXaml(string request)
         {
-            if (_chat == null)
+            if (!_currentCodeGenerator.IsReady)
             {
                 return;
             }
             LoaderOverlay.Visibility = Visibility.Visible;
             try
             {
-                _chat.AppendUserInput(request);
-                string response = await _chat.GetResponseFromChatbotAsync();
+                var response = await _currentCodeGenerator.Generate(request);
                 response = ExtractXaml(response);
                 XamlDisplay.Text = response;
                 Render(response);
@@ -123,36 +124,6 @@ namespace OpenSilverCodeGenerator
             return settings;
         }
 
-        private Conversation InitializeChat(Settings settings)
-        {
-            if (string.IsNullOrEmpty(settings.ApiKey))
-            {
-                Console.WriteLine("No Api Key provided");
-                return null;
-            }
-            var api = new OpenAI_API.OpenAIAPI(settings.ApiKey);
-
-            api.Chat.DefaultChatRequestArgs.MaxTokens = settings.MaxTokens;
-            api.Chat.DefaultChatRequestArgs.Model = settings.ApiModel;
-            Console.WriteLine(api.Chat.DefaultChatRequestArgs.Temperature);
-            var chat = api.Chat.CreateConversation();
-            chat.AppendSystemMessage(settings.Setup);
-
-            // Additional model training
-            // Give a few examples as user and assistant
-            var examples = settings.Examples?.Split(new [] { Delimiter }, StringSplitOptions.None);
-            if (examples != null)
-            {
-                for (var i = 0; i + 1 < examples.Length; i+=2)
-                {
-                    chat.AppendUserInput(examples[i]);
-                    chat.AppendExampleChatbotOutput(examples[i + 1]);
-                }
-            }
-
-            return chat;
-        }
-
         private void SaveSettings(object sender, RoutedEventArgs e)
         {
             try
@@ -169,7 +140,7 @@ namespace OpenSilverCodeGenerator
 
                 OpenSilver.Interop.ExecuteJavaScriptVoid("localStorage.setItem('settings', $0)", JsonConvert.SerializeObject(settings));
                 _settings = settings;
-                _chat = InitializeChat(_settings);
+                _chatGptCodeGenerator.Initialize(_settings);
             }
             catch (Exception ex)
             {
@@ -179,7 +150,7 @@ namespace OpenSilverCodeGenerator
 
         private void Reset(object sender, RoutedEventArgs e)
         {
-            _chat = InitializeChat(_settings);
+            _chatGptCodeGenerator.Initialize(_settings);
         }
     }
 }

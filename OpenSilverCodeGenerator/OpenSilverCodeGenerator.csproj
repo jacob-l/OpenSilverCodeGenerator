@@ -25,6 +25,8 @@
 
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
+    <Compile Include="CodeGenerators\ChatGptCodeGenerator.cs" />
+    <Compile Include="CodeGenerators\ICodeGenerator.cs" />
     <Compile Include="LoaderComponent.xaml.cs" />
     <Compile Include="MainPage.xaml.cs" />
     <Compile Include="Settings.cs" />
